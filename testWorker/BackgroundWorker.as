@@ -18,11 +18,11 @@
             registerClassAlias("CountResult", CountResult);
             
             commandChannel = Worker.current.getSharedProperty("incomingCommandChannel") as MessageChannel;
+            resultChannel = Worker.current.getSharedProperty("resultChannel") as MessageChannel;
+			
 			if(commandChannel){
 				commandChannel.addEventListener(Event.CHANNEL_MESSAGE, handleCommandMessage);
 			}
-            //
-            resultChannel = Worker.current.getSharedProperty("resultChannel") as MessageChannel;
         }        
         
         private function handleCommandMessage(event:Event):void{
