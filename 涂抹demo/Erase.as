@@ -37,6 +37,13 @@
 			addEventListener(Event.ENTER_FRAME,update);
 		}
 		
+		private function update(e:Event):void{
+			_canvasShape.graphics.lineTo(_canvasShape.mouseX,_canvasShape.mouseY);
+			_canvasBmd.draw(_canvasShape,null,null,BlendMode.ERASE);
+			var rate:Number = checkBmd(_sourceBmd,_canvasBmd);
+			_txt.text = int(100-rate*100)+"%";
+		}
+		
 		private function initErase(child:DisplayObject):void{
 			var childRect:Rectangle=child.getBounds(child.parent);
 			var childId:int=child.parent.getChildIndex(child);
@@ -59,14 +66,6 @@
 			//canvasShape.graphics.lineBitmapStyle(bmd0);
 			_canvasShape.graphics.moveTo(_canvasShape.mouseX,_canvasShape.mouseY);
 		}
-
-		private function update(e:Event):void{
-			_canvasShape.graphics.lineTo(_canvasShape.mouseX,_canvasShape.mouseY);
-			_canvasBmd.draw(_canvasShape,null,null,BlendMode.ERASE);
-			var rate:Number = checkBmd(_sourceBmd,_canvasBmd);
-			_txt.text = int(100-rate*100)+"%";
-		}
-
 
 		private function checkBmd(sourceBmd:BitmapData,canvasBmd:BitmapData):Number{
 			var count0:int, count1:int;

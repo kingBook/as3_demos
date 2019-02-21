@@ -40,6 +40,14 @@
 			addEventListener(Event.ENTER_FRAME,update);
 		}
 		
+		private function update(e:Event):void{
+			_canvasShape.graphics.lineTo(_canvasShape.mouseX,_canvasShape.mouseY);
+			_canvasBmd.fillRect(_canvasRect,0);//清空再画，否则有透明度的效果会叠加覆盖
+			_canvasBmd.draw(_canvasShape);
+			var rate:Number = checkBmd(_sourceBmd,_canvasBmd);
+			_txt.text = int(rate*100)+"%";
+		}
+		
 		private function initDraw(child:DisplayObject):void{
 			var childRect:Rectangle=child.getBounds(child.parent);
 			var childId:int=child.parent.getChildIndex(child);
@@ -64,15 +72,6 @@
 			
 			 _canvasRect=new Rectangle(0,0,_canvasBmd.width,_canvasBmd.height);
 		}
-
-		private function update(e:Event):void{
-			_canvasShape.graphics.lineTo(_canvasShape.mouseX,_canvasShape.mouseY);
-			_canvasBmd.fillRect(_canvasRect,0);//清空再画，否则有透明度的效果会叠加覆盖
-			_canvasBmd.draw(_canvasShape);
-			var rate:Number = checkBmd(_sourceBmd,_canvasBmd);
-			_txt.text = int(rate*100)+"%";
-		}
-
 
 		private function checkBmd(sourceBmd:BitmapData,canvasBmd:BitmapData):Number{
 			var count0:int, count1:int;
