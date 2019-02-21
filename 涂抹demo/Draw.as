@@ -93,6 +93,26 @@
 			return bmd;
 		}
 		
+		private function dispose():void{
+			if(_sourceBmd){
+				_sourceBmd.dispose();
+				_sourceBmd=null;
+			}
+			if(_canvasBmp){
+				if(_canvasBmp.parent)_canvasBmp.parent.removeChild(_canvasBmp);
+				_canvasBmp=null;
+			}
+			if(_canvasBmd){
+				_canvasBmd.dispose();
+				_canvasBmd=null;
+			}
+			if(_canvasShape){
+				if(_canvasShape.parent)_canvasShape.parent.removeChild(_canvasShape);
+				_canvasShape=null;
+			}
+			_canvasRect=null;
+		}
+		
 		
 	}
 }
