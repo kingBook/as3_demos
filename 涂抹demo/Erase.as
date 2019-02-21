@@ -11,6 +11,7 @@
 	import flash.display.Shape;
 	import flash.text.TextField;
 	import flash.display.BlendMode;
+	import flash.display.DisplayObjectContainer;
 	
 	public class Erase extends MovieClip {
 		
@@ -47,20 +48,21 @@
 		private function initErase(child:DisplayObject):void{
 			var childRect:Rectangle=child.getBounds(child.parent);
 			var childId:int=child.parent.getChildIndex(child);
+			var childParent:DisplayObjectContainer=child.parent;
 			_sourceBmd=getDisObjBmd(child);
 			_canvasBmd=_sourceBmd.clone();
 			//addChild(new Bitmap(_sourceBmd));
 			_canvasBmp = new Bitmap(_canvasBmd);
 			_canvasBmp.x=childRect.x;
 			_canvasBmp.y=childRect.y;
-			addChildAt(_canvasBmp,childId);
-			removeChild(child);
+			childParent.addChildAt(_canvasBmp,childId);
+			childParent.removeChild(child);
 
 			_canvasShape = new Shape();
 			_canvasShape.x = childRect.x;
 			_canvasShape.y = childRect.y;
 			_canvasShape.visible=false;
-			addChild(_canvasShape);
+			childParent.addChild(_canvasShape);
 
 			_canvasShape.graphics.lineStyle(40);
 			//canvasShape.graphics.lineBitmapStyle(bmd0);
