@@ -2,6 +2,7 @@
 	import flash.display.MovieClip;
 	import flash.display.BitmapData;
 	import flash.display.DisplayObject;
+	import flash.events.MouseEvent;
 	import flash.geom.Rectangle;
 	import flash.geom.Matrix;
 	import flash.display.Bitmap;
@@ -12,10 +13,12 @@
 	import flash.text.TextField;
 	import flash.display.BlendMode;
 	import flash.display.DisplayObjectContainer;
+	import flash.utils.getTimer;
 	
 	public class Erase extends MovieClip {
 		
 		private var _txt:TextField;
+		private var _mc:MovieClip;
 		
 		private var _sourceBmd:BitmapData;
 		private var _canvasBmd:BitmapData;
@@ -31,18 +34,18 @@
 			if(e)removeEventListener(Event.ADDED_TO_STAGE,init);
 			//
 			_txt=getChildByName("txt") as TextField;
-			var child:MovieClip = getChildByName("mc") as MovieClip;
-			
-			initErase(child);
-			
+			_txt.text="0%";
+			_mc=getChildByName("mc") as MovieClip;
+			//_mc.visible=false;
+						
+			stage.addEventListener(MouseEvent.MOUSE_DOWN,onMouseDownHandler);
 			addEventListener(Event.ENTER_FRAME,update);
 		}
 		
-		private function update(e:Event):void{
-			_canvasShape.graphics.lineTo(_canvasShape.mouseX,_canvasShape.mouseY);
-			_canvasBmd.draw(_canvasShape,null,null,BlendMode.ERASE);
-			var rate:Number = checkBmd(_sourceBmd,_canvasBmd);
-			_txt.text = int(100-rate*100)+"%";
+		private function onMouseDownHandler(e:MouseEvent):void{
+			if(_sourceBmd==null&&_canvasBmd==null){
+				initErase(_mc);
+			}
 		}
 		
 		private function initErase(child:DisplayObject):void{
@@ -65,8 +68,20 @@
 			childParent.addChild(_canvasShape);
 
 			_canvasShape.graphics.lineStyle(40);
-			//canvasShape.graphics.lineBitmapStyle(bmd0);
+			//_canvasShape.graphics.lineBitmapStyle(_sourceBmd);
 			_canvasShape.graphics.moveTo(_canvasShape.mouseX,_canvasShape.mouseY);
+		}
+		//var time:int;
+		private function update(e:Event):void{
+			if(_sourceBmd&&_canvasBmd){
+				_canvasShape.graphics.lineTo(_canvasShape.mouseX,_canvasShape.mouseY);
+				_canvasBmd.draw(_canvasShape,null,null,BlendMode.ERASE);
+				//time=getTimer();
+				var rate:Number = checkBmd(_sourceBmd,_canvasBmd);
+				//time=getTimer()-time;
+				//trace("time:"+time);
+				_txt.text = int(100-rate*100)+"%";
+			}
 		}
 
 		private function checkBmd(sourceBmd:BitmapData,canvasBmd:BitmapData):Number{
