@@ -51,13 +51,17 @@
 				bmd=new BitmapData(bg.width,bg.height);
 				bmd.draw(bg);
 				
-				var file:File=new File(File.desktopDirectory.nativePath+"/book10.jpg");
+				var file:File=File.desktopDirectory;
+				file=file.resolvePath("book10.jpg");
+				//var file:File=new File(File.desktopDirectory.nativePath+"/book10.jpg");//文本常量形式的本机路径，只在一个平台上有效
 				writeImage(file,bmd,false,80);
 			}else if(e.target.name=="writePngBtn"){
 				bmd=new BitmapData(bg.width,bg.height,true,0x000000);//注意bitmapData.transparent必须设置为true,图片才透明
 				bmd.draw(bg);
 				
-				file=new File(File.desktopDirectory.nativePath+"/book11.png");
+				file=File.desktopDirectory;
+				file=file.resolvePath("book11.jpg");
+				//file=new File(File.desktopDirectory.nativePath+"/book11.png");////文本常量形式的本机路径，只在一个平台上有效
 				writeImage(file,bmd,true);
 			}
 		}
