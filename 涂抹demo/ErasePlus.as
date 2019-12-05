@@ -91,9 +91,7 @@
 		private function checkBmd(sourceBmd:BitmapData,canvasBmd:BitmapData):Number{
 			var rate:Number=0;//0~1
 			var result:*=sourceBmd.compare(canvasBmd);
-			if(result==0){
-				rate=1;
-			}else{
+			if(result!=0){
 				var tmpBmd:BitmapData=result as BitmapData;
 				//bmp||=new Bitmap(tmpBmd);
 				//bmp.bitmapData=tmpBmd;

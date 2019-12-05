@@ -91,6 +91,7 @@
 				//time=getTimer()-time; 
 				//trace("time:"+time);
 				_txt.text = int(rate*100)+"%";
+				trace(rate);
 			}
 		}
 		//var bmp:Bitmap;
