@@ -9,7 +9,7 @@
 
 	public class Main extends Sprite{
 		private const maxSpeed:Number=2;
-		private const maxWheelRotation:Number=45;
+		private const maxWheelRotation:Number=30;
 		
 		private var _car:MovieClip;
 		private var _carBody:MovieClip;
@@ -21,6 +21,8 @@
 		private var _wheelRotation:Number=0;
 		private var _speed:Number=0;
 		private var _friction:Number=0.8;
+		private var _length:Number=100;
+		
 		
 		public function Main(){
 			this.addEventListener(Event.ADDED_TO_STAGE,onAddedToState);
@@ -73,7 +75,7 @@
 		  return value;
 		}
 		
-		private function Drive(vNormalized:Point,moveSpeed:Number=1,wheelRotateSpeed:Number=1):void{
+		private function drive(vNormalized:Point,moveSpeed:Number=1,wheelRotateSpeed:Number=1):void{
 			_isDriveing=true;
 			
 			var speedDirection:Number=vNormalized.y>0?1:vNormalized.y<0?-1:0;
@@ -83,19 +85,19 @@
 			_wheelRotation=clamp(_wheelRotation+wheelAngleDirection*wheelRotateSpeed,-maxWheelRotation,maxWheelRotation);
 		}
 		
-		private function StopDrive():void{
+		private function stopDrive():void{
 			_isDriveing=false;
 		}
 		
 		private function onUpdate(e:Event):void{
 			if(_vNormalized.length>0){
-				Drive(_vNormalized);
+				drive(_vNormalized,1,2);
 			}else{
-				StopDrive();
+				stopDrive();
 			}
 			
-			for(var i:int=0;i<2;i++){
-				_carWheels[i].rotation=_wheelRotation;
+			for(var i:int=0;i<4;i++){
+				_carWheels[i].rotation=i>1?-_wheelRotation*0.3:_wheelRotation;
 			}
 			
 			
@@ -104,9 +106,9 @@
 			//Y轴方向的为旋转力，影响汽车的角度
 			var onward:Number = _speed * Math.cos(_wheelRotation*Math.PI/180);//汽车位移，x轴方向的分力
 			var yy:Number = _speed * Math.sin(_wheelRotation*Math.PI/180);//y轴方向的分力
-			var myRotation:Number = Math.atan2(yy, length);//汽车要改变的角度（弧度值）
-			trace("_wheelRotation:"+_wheelRotation,"myRotation:",myRotation*180/Math.PI);
-			_car.rotation+= myRotation*0.05 * 180 / Math.PI;//汽车转向
+			var myRotation:Number = Math.atan2(yy, _length);//汽车要改变的角度（弧度值）
+			//trace("_wheelRotation:"+_wheelRotation,"myRotation:",myRotation*180/Math.PI);
+			_car.rotation+= myRotation * 180 / Math.PI;//汽车转向
 			//汽车位移
 			_velocity.x = onward * Math.cos(_car.rotation*Math.PI/180);
 			_velocity.y = onward * Math.sin(_car.rotation*Math.PI/180);
